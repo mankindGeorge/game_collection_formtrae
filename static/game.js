@@ -525,10 +525,168 @@ class TetrisGame {
     }
 }
 
-// 全局游戏实例
-let game = null;
+// 游戏切换功能
+class GameCollection {
+    constructor() {
+        this.currentGame = 'tetris';
+        this.tetrisGame = null;
+        this.reversiGame = null;
+        this.init();
+    }
 
-// 页面加载完成后初始化游戏
-document.addEventListener('DOMContentLoaded', () => {
-    game = new TetrisGame();
-});
+    init() {
+        this.bindGameSelectorEvents();
+        this.showGame('tetris');
+        
+        // 初始化俄罗斯方块游戏
+        document.addEventListener('DOMContentLoaded', () => {
+            this.tetrisGame = new TetrisGame();
+            window.game = this.tetrisGame;
+        });
+    }
+
+    bindGameSelectorEvents() {
+        const gameButtons = document.querySelectorAll('.game-btn');
+        
+        gameButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const gameType = e.target.dataset.game;
+                this.switchGame(gameType);
+            });
+        });
+    }
+
+    switchGame(gameType) {
+        if (gameType === this.currentGame) return;
+        
+        // 更新按钮状态
+        document.querySelectorAll('.game-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-game="${gameType}"]`).classList.add('active');
+        
+        // 隐藏当前游戏，显示新游戏
+        this.hideCurrentGame();
+        this.showGame(gameType);
+        
+        this.currentGame = gameType;
+        
+        // 处理游戏切换逻辑
+        if (gameType === 'tetris') {
+            // 切换到俄罗斯方块
+            if (this.tetrisGame && this.tetrisGame.gameStarted) {
+                this.tetrisGame.togglePause();
+            }
+        } else if (gameType === 'reversi') {
+            // 切换到黑白棋
+            this.initializeReversiGame();
+        }
+    }
+
+    initializeReversiGame() {
+        // 动态加载黑白棋脚本（如果尚未加载）
+        if (!window.reversiGame) {
+            // 创建script元素
+            const script = document.createElement('script');
+            script.src = "/static/reversi.js";
+            script.onload = () => {
+                // 脚本加载完成后初始化游戏
+                this.setupReversiGame();
+            };
+            document.head.appendChild(script);
+        } else if (!this.reversiGame) {
+            // 如果脚本已加载但游戏未初始化
+            this.setupReversiGame();
+        } else {
+            // 如果游戏已经初始化，确保尺寸选择器正常工作
+            this.setupReversiSizeSelector();
+        }
+    }
+
+    setupReversiGame() {
+        // 获取选择的棋盘尺寸
+        const sizeSelect = document.getElementById('reversiBoardSize');
+        const boardSize = sizeSelect ? parseInt(sizeSelect.value) : 8;
+        
+        // 初始化游戏
+        window.reversiGame = new ReversiGame(boardSize);
+        this.reversiGame = window.reversiGame;
+        
+        // 设置尺寸选择器事件
+        this.setupReversiSizeSelector();
+        this.setupReversiAISelector();
+    }
+
+    setupReversiSizeSelector() {
+        const sizeBtn = document.getElementById('reversiSizeBtn');
+        const sizeSelect = document.getElementById('reversiBoardSize');
+        
+        if (sizeBtn && sizeSelect) {
+            // 移除现有的事件监听器（避免重复绑定）
+            const newSizeBtn = sizeBtn.cloneNode(true);
+            sizeBtn.parentNode.replaceChild(newSizeBtn, sizeBtn);
+            
+            // 绑定新的事件
+            newSizeBtn.addEventListener('click', () => {
+                const newSize = parseInt(sizeSelect.value);
+                if (window.reversiGame) {
+                    // 重新创建游戏实例
+                    window.reversiGame = new ReversiGame(newSize);
+                    this.reversiGame = window.reversiGame;
+                }
+            });
+        }
+    }
+
+    setupReversiAISelector() {
+        const aiBtn = document.getElementById('reversiAIBtn');
+        const aiSelect = document.getElementById('reversiAILevel');
+        const aiColorSelect = document.getElementById('reversiAIColor');
+        
+        if (aiBtn && aiSelect && aiColorSelect) {
+            // 移除现有的事件监听器（避免重复绑定）
+            const newAIBtn = aiBtn.cloneNode(true);
+            aiBtn.parentNode.replaceChild(newAIBtn, aiBtn);
+            
+            // 绑定新的事件
+            newAIBtn.addEventListener('click', () => {
+                const aiLevel = aiSelect.value;
+                const aiColor = parseInt(aiColorSelect.value);
+                if (window.reversiGame) {
+                    window.reversiGame.setAIColor(aiColor);
+                    window.reversiGame.setAILevel(aiLevel);
+                    
+                    // 更新按钮文本
+                    const levelNames = {
+                        'none': '无AI',
+                        'novice': '小兵级',
+                        'amateur': '业余级',
+                        'master': '大师级'
+                    };
+                    const colorNames = {
+                        1: '黑棋',
+                        2: '白棋'
+                    };
+                    newAIBtn.textContent = `AI: ${levelNames[aiLevel]}(${colorNames[aiColor]})`;
+                }
+            });
+        }
+    }
+
+    hideCurrentGame() {
+        const currentWindow = document.querySelector('.game-window.active');
+        if (currentWindow) {
+            currentWindow.classList.remove('active');
+        }
+    }
+
+    showGame(gameType) {
+        const targetWindow = document.getElementById(`${gameType}-window`);
+        if (targetWindow) {
+            targetWindow.classList.add('active');
+        }
+    }
+}
+
+// 初始化游戏合集
+const gameCollection = new GameCollection();

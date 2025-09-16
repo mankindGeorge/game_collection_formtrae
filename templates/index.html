@@ -3,62 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>俄罗斯方块 - Python + Node.js</title>
+    <title>游戏合集 - Python Flask</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="container">
-        <h1>🎮 俄罗斯方块</h1>
+        <h1>🎮 游戏合集</h1>
         
-        <div class="game-container">
-            <div class="main-game">
-                <div class="mobile-game-header">
-                    <div class="mobile-next-piece">
-                        <h3>下一个</h3>
-                        <div class="next-piece-board" id="nextPieceBoard">
-                            <!-- 下一个方块将通过JavaScript动态生成 -->
+        <!-- 游戏选择器 -->
+        <div class="game-selector">
+            <button class="game-btn active" data-game="tetris">俄罗斯方块</button>
+            <button class="game-btn" data-game="reversi">黑白棋</button>
+            <button class="game-btn" data-game="snake">贪吃蛇</button>
+            <button class="game-btn" data-game="puzzle">拼图游戏</button>
+            <button class="game-btn" data-game="memory">记忆匹配</button>
+        </div>
+        
+        <!-- 游戏窗口容器 -->
+        <div class="games-container">
+            <!-- 俄罗斯方块游戏窗口 -->
+            <div class="game-window active" id="tetris-window">
+                <div class="game-container">
+                    <div class="main-game">
+                        <div class="mobile-game-header">
+                            <div class="mobile-next-piece">
+                                <h3>下一个</h3>
+                                <div class="next-piece-board" id="nextPieceBoard">
+                                    <!-- 下一个方块将通过JavaScript动态生成 -->
+                                </div>
+                            </div>
+                            
+                            <div class="game-info">
+                                <div class="score">分数: <span id="score">0</span></div>
+                                <div class="level">等级: <span id="level">1</span></div>
+                                <div class="lines">行数: <span id="lines">0</span></div>
+                                <div class="status" id="gameStatus">准备开始</div>
+                            </div>
+                        </div>
+                        
+                        <div class="game-board" id="gameBoard">
+                            <!-- 游戏板将通过JavaScript动态生成 -->
+                        </div>
+                        
+                        <div class="controls">
+                            <button id="startBtn" class="btn start-btn">开始游戏</button>
+                            <button id="restartBtn" class="btn restart-btn">重新开始</button>
+                            <button id="pauseBtn" class="btn pause-btn">暂停</button>
+                        </div>
+                        
+                        <!-- 移动端触摸控制 -->
+                        <div class="mobile-controls">
+                            <button class="control-btn rotate-btn" onclick="game.rotate()">↻</button>
+                            <button id="leftBtn" class="control-btn left-btn">←</button>
+                            <button id="downBtn" class="control-btn down-btn">↓</button>
+                            <button id="rightBtn" class="control-btn right-btn">→</button>
+                            <button class="control-btn hard-drop-btn" onclick="game.hardDrop()">硬降</button>
                         </div>
                     </div>
                     
-                    <div class="game-info">
-                        <div class="score">分数: <span id="score">0</span></div>
-                        <div class="level">等级: <span id="level">1</span></div>
-                        <div class="lines">行数: <span id="lines">0</span></div>
-                        <div class="status" id="gameStatus">准备开始</div>
+                    <div class="side-panel">
+                        <div class="instructions">
+                            <h3>操作说明</h3>
+                            <ul>
+                                <li>← → : 左右移动</li>
+                                <li>↑ : 旋转</li>
+                                <li>↓ : 加速下落</li>
+                                <li>空格 : 硬降（直接落底）</li>
+                                <li>P : 暂停/继续</li>
+                                <li>R : 重新开始</li>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-                
-                <div class="game-board" id="gameBoard">
-                    <!-- 游戏板将通过JavaScript动态生成 -->
-                </div>
-                
-                <div class="controls">
-                    <button id="startBtn" class="btn start-btn">开始游戏</button>
-                    <button id="restartBtn" class="btn restart-btn">重新开始</button>
-                    <button id="pauseBtn" class="btn pause-btn">暂停</button>
-                </div>
-                
-                <!-- 移动端触摸控制 -->
-                <div class="mobile-controls">
-                    <button class="control-btn rotate-btn" onclick="game.rotate()">↻</button>
-                    <button id="leftBtn" class="control-btn left-btn">←</button>
-                    <button id="downBtn" class="control-btn down-btn">↓</button>
-                    <button id="rightBtn" class="control-btn right-btn">→</button>
-                    <button class="control-btn hard-drop-btn" onclick="game.hardDrop()">硬降</button>
                 </div>
             </div>
             
-            <div class="side-panel">
-                <div class="instructions">
-                    <h3>操作说明</h3>
-                    <ul>
-                        <li>← → : 左右移动</li>
-                        <li>↑ : 旋转</li>
-                        <li>↓ : 加速下落</li>
-                        <li>空格 : 硬降（直接落底）</li>
-                        <li>P : 暂停/继续</li>
-                        <li>R : 重新开始</li>
-                    </ul>
+            <!-- 黑白棋游戏窗口 -->
+            <div class="game-window" id="reversi-window">
+                <div class="reversi-container">
+                    <!-- 棋盘尺寸选择 -->
+                    <div class="reversi-size-selector">
+                        <label>棋盘尺寸:</label>
+                        <select id="reversiBoardSize">
+                            <option value="6">6×6</option>
+                            <option value="8" selected>8×8</option>
+                            <option value="10">10×10</option>
+                            <option value="12">12×12</option>
+                        </select>
+                        <button class="reversi-btn" id="reversiSizeBtn">应用尺寸</button>
+                    </div>
+                    
+                    <div class="reversi-board" id="reversiBoard">
+                        <!-- 棋盘将通过JavaScript动态生成 -->
+                    </div>
+                    
+                    <div class="reversi-info">
+                        <div class="reversi-player" id="reversiPlayer">黑棋</div>
+                        <div class="reversi-counts">
+                            <div class="reversi-count">
+                                <span>黑棋:</span>
+                                <span id="reversiBlackCount">2</span>
+                            </div>
+                            <div class="reversi-count">
+                                <span>白棋:</span>
+                                <span id="reversiWhiteCount">2</span>
+                            </div>
+                        </div>
+                        <div class="reversi-status" id="reversiStatus">准备开始</div>
+                    </div>
+                    
+                    <div class="reversi-controls">
+                        <button class="reversi-btn" id="reversiRestartBtn">重新开始</button>
+                    </div>
+                    
+                    <!-- AI对手选择 -->
+                    <div class="reversi-ai-selector">
+                        <label>AI对手:</label>
+                        <select id="reversiAILevel">
+                            <option value="none" selected>无AI</option>
+                            <option value="novice">小兵级</option>
+                            <option value="amateur">业余级</option>
+                            <option value="master">大师级</option>
+                        </select>
+                        
+                        <label>执棋:</label>
+                        <select id="reversiAIColor">
+                            <option value="2" selected>白棋</option>
+                            <option value="1">黑棋</option>
+                        </select>
+                        
+                        <button class="reversi-btn" id="reversiAIBtn">设置AI</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 预留其他游戏窗口 -->
+            <div class="game-window" id="snake-window">
+                <div class="placeholder-game">
+                    <h2>🐍 贪吃蛇游戏</h2>
+                    <p>游戏开发中，敬请期待...</p>
+                    <div class="placeholder-board"></div>
+                </div>
+            </div>
+            
+            <div class="game-window" id="puzzle-window">
+                <div class="placeholder-game">
+                    <h2>🧩 拼图游戏</h2>
+                    <p>游戏开发中，敬请期待...</p>
+                    <div class="placeholder-board"></div>
+                </div>
+            </div>
+            
+            <div class="game-window" id="memory-window">
+                <div class="placeholder-game">
+                    <h2>🎴 记忆匹配</h2>
+                    <p>游戏开发中，敬请期待...</p>
+                    <div class="placeholder-board"></div>
                 </div>
             </div>
         </div>

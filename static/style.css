@@ -406,3 +406,757 @@ h1 {
         font-size: 1.1em;
     }
 }
+
+/* 游戏合集样式 */
+.game-selector {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.game-btn {
+    padding: 12px 24px;
+    border: 2px solid #007bff;
+    border-radius: 25px;
+    background: white;
+    color: #007bff;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    text-align: center;
+}
+
+.game-btn:hover {
+    background: #007bff;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+.game-btn.active {
+    background: #007bff;
+    color: white;
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.5);
+}
+
+.games-container {
+    position: relative;
+    min-height: 500px;
+}
+
+.game-window {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.game-window.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.placeholder-game {
+    text-align: center;
+    padding: 60px 20px;
+    background: #f8f9fa;
+    border-radius: 15px;
+    border: 2px dashed #6c757d;
+}
+
+.placeholder-game h2 {
+    color: #495057;
+    margin-bottom: 20px;
+    font-size: 2em;
+}
+
+.placeholder-game p {
+    color: #6c757d;
+    font-size: 1.1em;
+    margin-bottom: 30px;
+}
+
+.placeholder-board {
+    width: 200px;
+    height: 200px;
+    background: linear-gradient(45deg, #e9ecef, #dee2e6);
+    border-radius: 10px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.placeholder-board::before {
+    content: "🚧";
+    font-size: 3em;
+    opacity: 0.5;
+}
+
+.placeholder-board::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .game-selector {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .game-btn {
+        padding: 10px 16px;
+        min-width: 80px;
+        font-size: 0.9em;
+    }
+    
+    .games-container {
+        min-height: 400px;
+    }
+    
+    .placeholder-game {
+        padding: 40px 15px;
+    }
+    
+    .placeholder-game h2 {
+        font-size: 1.5em;
+    }
+    
+    .placeholder-board {
+        width: 150px;
+        height: 150px;
+    }
+}
+
+/* 黑白棋样式 */
+.reversi-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.reversi-size-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.reversi-size-selector label {
+    font-weight: bold;
+    color: #495057;
+    white-space: nowrap;
+}
+
+.reversi-size-selector select {
+    padding: 6px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background: white;
+    color: #495057;
+    font-size: 14px;
+}
+
+.reversi-size-selector select:focus {
+    outline: none;
+    border-color: #3498DB;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* AI选择器样式 */
+.reversi-ai-selector {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+    margin-top: 15px;
+    border: 1px solid #dee2e6;
+}
+
+.reversi-ai-selector label {
+    font-weight: bold;
+    color: #495057;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.reversi-ai-selector select {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background: white;
+    font-size: 14px;
+    min-width: 100px;
+}
+
+.reversi-ai-selector select:focus {
+    outline: none;
+    border-color: #3498DB;
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.reversi-board {
+    display: grid;
+    gap: 2px;
+    background: #2C3E50;
+    border: 3px solid #34495E;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    /* 棋盘尺寸将通过JavaScript动态设置 */
+}
+
+.reversi-cell {
+    width: 40px;
+    height: 40px;
+    background: #A0AEC0;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    position: relative;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.reversi-cell:hover {
+    background: #BDC3C7;
+    transform: scale(1.05);
+}
+
+.reversi-cell.valid-move {
+    background: #FFD700;
+}
+
+.reversi-cell.valid-move::before {
+    content: '';
+    width: 15px;
+    height: 15px;
+    background: rgba(255, 215, 0, 0.7);
+    border-radius: 50%;
+    position: absolute;
+}
+
+.reversi-cell.black {
+    background: #000;
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+.reversi-cell.white {
+    background: #FFF;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #CCC;
+}
+
+.reversi-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.reversi-player {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #e9ecef;
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.reversi-counts {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    width: 100%;
+}
+
+.black-text {
+    color: #000;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.white-text {
+    color: #6c757d;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.reversi-count {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.reversi-count::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.reversi-count:nth-child(2)::before {
+    background: #000;
+}
+
+.reversi-count:nth-child(3)::before {
+    background: #FFF;
+    border: 1px solid #CCC;
+}
+
+.reversi-status {
+    grid-column: 1 / -1;
+    color: #495057;
+    font-style: italic;
+}
+
+.reversi-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.reversi-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reversi-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+}
+
+/* 响应式适配 - 手机端优化 */
+@media (max-width: 768px) {
+    /* 禁止页面缩放 */
+    body {
+        touch-action: manipulation;
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    
+    /* 棋盘容器适配 - 简化版本 */
+    .reversi-container {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+        margin: 0 auto; /* 与俄罗斯方块一致的居中方式 */
+        overflow: hidden;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* 棋盘动态尺寸适配 - 简化计算 */
+    .reversi-board {
+        display: grid;
+        grid-template-columns: repeat(var(--board-size, 8), 1fr);
+        grid-template-rows: repeat(var(--board-size, 8), 1fr);
+        padding: 8px; /* 减小内边距 */
+        gap: 1px; /* 减小单元格间距 */
+        margin: 0 auto; /* 与俄罗斯方块一致的居中方式 */
+        width: 100%; /* 基于容器宽度而不是视窗宽度 */
+        max-width: 400px; /* 减小最大宽度 */
+        box-sizing: border-box;
+        aspect-ratio: 1;
+        overflow: visible;
+        background: #2C3E50; /* 与PC端保持一致 */
+        border: 2px solid #34495E; /* 减小边框宽度 */
+        border-radius: 6px; /* 减小圆角 */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* 减小阴影 */
+        justify-self: center; /* 与俄罗斯方块一致的居中方式 */
+    }
+    
+    /* 单元格尺寸 - 基于棋盘大小自动计算 */
+    .reversi-cell {
+        width: 100%;
+        height: 100%;
+        min-width: 20px;
+        min-height: 20px;
+        max-width: 50px;
+        max-height: 50px;
+        border-radius: 50%;
+        background: #A0AEC0; /* 与PC端保持一致 */
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2); /* 与PC端保持一致 */
+    }
+    
+    .reversi-cell:hover {
+        background: #BDC3C7; /* 与PC端保持一致 */
+        transform: scale(1.05); /* 与PC端保持一致 */
+    }
+    
+    .reversi-cell.valid-move {
+        background: #FFD700; /* 与PC端保持一致 */
+    }
+    
+    .reversi-cell.black {
+        background: #000;
+        box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.3); /* 与PC端保持一致 */
+    }
+    
+    .reversi-cell.white {
+        background: #FFF;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3); /* 与PC端保持一致 */
+        border: 1px solid #CCC; /* 与PC端保持一致 */
+    }
+    
+    .reversi-cell.valid-move::before {
+        content: '';
+        width: 15px;
+        height: 15px;
+        background: rgba(255, 215, 0, 0.7); /* 与PC端保持一致 */
+        border-radius: 50%;
+        position: absolute;
+        animation: pulse 1.5s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 0.6; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.2); }
+    }
+    
+    /* 信息区域适配 */
+    .reversi-info {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 15px;
+        font-size: 14px;
+        width: 100%;
+        max-width: 500px;
+        margin: 15px auto;
+        background: rgba(255,255,255,0.95);
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-sizing: border-box;
+    }
+    
+    .reversi-player {
+        font-size: 16px;
+        font-weight: bold;
+        padding: 8px 12px;
+        text-align: center;
+        border-radius: 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .reversi-counts {
+        display: flex;
+        justify-content: space-around;
+        gap: 20px;
+    }
+    
+    .reversi-count {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    
+    .reversi-count::before {
+        content: '';
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #333;
+    }
+    
+    .reversi-count:nth-child(1)::before {
+        background: #000;
+        border-color: #000;
+    }
+    
+    .reversi-count:nth-child(2)::before {
+        background: #FFF;
+        border-color: #CCC;
+    }
+    
+    .reversi-status {
+        font-size: 14px;
+        text-align: center;
+        padding: 8px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        border: 1px solid #e9ecef;
+    }
+    
+    /* 控制按钮适配 */
+    .reversi-controls {
+        display: flex;
+        gap: 12px;
+        padding: 0 15px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .reversi-btn {
+        padding: 12px 24px;
+        font-size: 14px;
+        border-radius: 25px;
+        background: linear-gradient(45deg, #FF6B6B, #EE5A24);
+        color: white;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        min-width: 120px;
+        box-shadow: 0 4px 15px rgba(255,107,107,0.3);
+    }
+    
+    .reversi-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255,107,107,0.4);
+    }
+    
+    /* 选择器适配 */
+    .reversi-size-selector,
+    .reversi-ai-selector {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        padding: 15px;
+        margin: 15px auto;
+        width: 100%;
+        max-width: 500px;
+        background: rgba(255,255,255,0.95);
+        border-radius: 12px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        box-sizing: border-box;
+    }
+    
+    .reversi-size-selector label,
+    .reversi-ai-selector label {
+        font-size: 14px;
+        font-weight: 500;
+        text-align: center;
+        color: #333;
+    }
+    
+    .reversi-size-selector select,
+    .reversi-ai-selector select {
+        padding: 10px 15px;
+        font-size: 14px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        background: white;
+        cursor: pointer;
+        transition: border-color 0.3s ease;
+    }
+    
+    .reversi-size-selector select:focus,
+    .reversi-ai-selector select:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+}
+
+/* 超小屏幕适配 */
+@media (max-width: 480px) {
+    .reversi-board {
+        width: 100%;
+        height: auto;
+        padding: 6px;
+        gap: 1px;
+        max-width: 400px;
+        max-height: 400px;
+    }
+    
+    .reversi-cell {
+        min-width: 18px;
+        min-height: 18px;
+        max-width: 40px;
+        max-height: 40px;
+    }
+    
+    .reversi-cell.valid-move::before {
+        width: 25%;
+        height: 25%;
+    }
+    
+    .reversi-info {
+        padding: 12px;
+        gap: 10px;
+        width: 100%;
+    }
+    
+    .reversi-player {
+        font-size: 14px;
+        padding: 6px 10px;
+    }
+    
+    .reversi-count {
+        font-size: 13px;
+    }
+    
+    .reversi-count::before {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .reversi-status {
+        font-size: 13px;
+        padding: 6px;
+    }
+    
+    .reversi-btn {
+        padding: 10px 20px;
+        font-size: 13px;
+        min-width: 100px;
+    }
+    
+    .reversi-size-selector,
+    .reversi-ai-selector {
+        padding: 12px;
+        width: 100%;
+        gap: 6px;
+    }
+    
+    .reversi-size-selector label,
+    .reversi-ai-selector label {
+        font-size: 13px;
+    }
+    
+    .reversi-size-selector select,
+    .reversi-ai-selector select {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+}
+
+/* 超超小屏幕适配 */
+@media (max-width: 360px) {
+    .reversi-board {
+        width: 100%;
+        height: auto;
+        padding: 4px;
+        gap: 0.5px;
+        max-width: 320px;
+        max-height: 320px;
+    }
+    
+    .reversi-cell {
+        min-width: 16px;
+        min-height: 16px;
+        max-width: 35px;
+        max-height: 35px;
+    }
+    
+    .reversi-info {
+        padding: 10px;
+        gap: 8px;
+        width: 100%;
+    }
+    
+    .reversi-player {
+        font-size: 13px;
+        padding: 5px 8px;
+    }
+    
+    .reversi-count {
+        font-size: 12px;
+        gap: 6px;
+    }
+    
+    .reversi-count::before {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .reversi-status {
+        font-size: 12px;
+        padding: 5px;
+    }
+    
+    .reversi-btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        min-width: 90px;
+    }
+    
+    .reversi-size-selector,
+    .reversi-ai-selector {
+        padding: 10px;
+        width: 100%;
+        gap: 5px;
+    }
+    
+    .reversi-size-selector label,
+    .reversi-ai-selector label {
+        font-size: 12px;
+    }
+    
+    .reversi-size-selector select,
+    .reversi-ai-selector select {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
