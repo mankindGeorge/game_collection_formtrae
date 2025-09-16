@@ -1,0 +1,408 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    max-width: 900px;
+    width: 100%;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.game-container {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+.main-game {
+    flex: 1;
+}
+
+.game-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.game-info div {
+    font-weight: bold;
+    color: #495057;
+}
+
+.status {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 1.1em;
+}
+
+.status.playing {
+    color: #28a745;
+}
+
+.status.paused {
+    color: #ffc107;
+}
+
+.status.game-over {
+    color: #dc3545;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(10, 30px);
+    grid-template-rows: repeat(20, 30px);
+    gap: 1px;
+    background: #212529;
+    border: 3px solid #495057;
+    border-radius: 8px;
+    padding: 5px;
+    margin: 0 auto 15px auto;
+    justify-self: center;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    background: #6c757d;
+    border-radius: 3px;
+    transition: all 0.1s ease;
+}
+
+.cell.filled {
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.restart-btn {
+    background: linear-gradient(45deg, #007bff, #0056b3);
+    color: white;
+}
+
+.pause-btn {
+    background: linear-gradient(45deg, #6c757d, #495057);
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.side-panel {
+    width: 200px;
+}
+
+.next-piece {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.next-piece h3 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #495057;
+}
+
+.next-piece-board {
+    display: grid;
+    grid-template-columns: repeat(4, 20px);
+    grid-template-rows: repeat(4, 20px);
+    gap: 2px;
+    background: #212529;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 auto;
+    justify-content: center;
+}
+
+.next-cell {
+    width: 20px;
+    height: 20px;
+    background: #6c757d;
+    border-radius: 2px;
+}
+
+.next-cell.filled {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.instructions {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #007bff;
+}
+
+.instructions h3 {
+    color: #495057;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.instructions ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.instructions li {
+    padding: 5px 0;
+    color: #6c757d;
+    position: relative;
+    padding-left: 20px;
+    font-size: 0.9em;
+}
+
+.instructions li::before {
+    content: "•";
+    color: #007bff;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .container {
+        padding: 20px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    
+    .game-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .side-panel {
+        width: 100%;
+        max-width: 300px;
+        order: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .mobile-game-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        width: 100%;
+        max-width: 300px;
+        gap: 10px;
+    }
+    
+    .mobile-next-piece {
+        background: #f8f9fa;
+        padding: 8px;
+        border-radius: 8px;
+        text-align: center;
+        min-width: 70px;
+        flex-shrink: 0;
+    }
+    
+    .mobile-next-piece h3 {
+        font-size: 0.9em;
+        margin-bottom: 5px;
+        color: #495057;
+    }
+    
+    .game-info {
+        background: #f8f9fa;
+        padding: 8px;
+        border-radius: 8px;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 5px;
+        min-width: 110px;
+        flex-shrink: 0;
+    }
+    
+    .game-info div {
+        font-size: 0.8em;
+    }
+    
+    .status {
+        grid-column: 1 / -1;
+        text-align: center;
+        font-size: 0.9em;
+    }
+    
+    .game-board {
+        grid-template-columns: repeat(10, 20px);
+        grid-template-rows: repeat(20, 20px);
+        margin: 0 auto 15px auto;
+        justify-self: center;
+        width: fit-content;
+    }
+    
+    .cell {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .next-piece-board {
+        grid-template-columns: repeat(4, 12px);
+        grid-template-rows: repeat(4, 12px);
+    }
+    
+    .next-cell {
+        width: 12px;
+        height: 12px;
+    }
+    
+    .instructions {
+        display: none;
+    }
+}
+
+/* 移动端触摸控制 */
+.mobile-controls {
+    display: none;
+    margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+    .mobile-controls {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto auto;
+        gap: 10px;
+        max-width: 300px;
+        margin: 20px auto 0;
+    }
+    
+    .control-btn {
+        padding: 15px;
+        border: none;
+        border-radius: 10px;
+        font-size: 1.2em;
+        font-weight: bold;
+        cursor: pointer;
+        background: linear-gradient(45deg, #007bff, #0056b3);
+        color: white;
+        transition: all 0.2s ease;
+        touch-action: manipulation;
+    }
+    
+    .control-btn:active {
+        transform: scale(0.95);
+        background: linear-gradient(45deg, #0056b3, #004085);
+    }
+    
+    .rotate-btn {
+        grid-column: 2;
+        grid-row: 1;
+        background: linear-gradient(45deg, #28a745, #1e7e34);
+    }
+    
+    .rotate-btn:active {
+        background: linear-gradient(45deg, #1e7e34, #155724);
+    }
+    
+    .left-btn {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    
+    .right-btn {
+        grid-column: 3;
+        grid-row: 2;
+    }
+    
+    .down-btn {
+        grid-column: 2;
+        grid-row: 2;
+        background: linear-gradient(45deg, #ffc107, #e0a800);
+    }
+    
+    .down-btn:active {
+        background: linear-gradient(45deg, #e0a800, #b38f00);
+    }
+    
+    .hard-drop-btn {
+        grid-column: 1 / -1;
+        grid-row: 3;
+        background: linear-gradient(45deg, #dc3545, #c82333);
+        font-size: 1em;
+        padding: 12px;
+    }
+    
+    .hard-drop-btn:active {
+        background: linear-gradient(45deg, #c82333, #a71e2a);
+    }
+}
+
+/* 非常小的屏幕适配 */
+@media (max-width: 480px) {
+    .game-board {
+        grid-template-columns: repeat(10, 16px);
+        grid-template-rows: repeat(20, 16px);
+    }
+    
+    .cell {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .mobile-controls {
+        gap: 8px;
+    }
+    
+    .control-btn {
+        padding: 12px;
+        font-size: 1.1em;
+    }
+}
