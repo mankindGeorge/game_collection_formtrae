@@ -741,11 +741,11 @@ h1 {
     display: inline-block;
 }
 
-.reversi-count:nth-child(2)::before {
+.reversi-count:nth-child(1)::before {
     background: #000;
 }
 
-.reversi-count:nth-child(3)::before {
+.reversi-count:nth-child(2)::before {
     background: #FFF;
     border: 1px solid #CCC;
 }
